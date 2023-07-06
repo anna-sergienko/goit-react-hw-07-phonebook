@@ -1,19 +1,15 @@
-
 import { useDispatch, useSelector } from 'react-redux';
-import { nanoid } from "nanoid";
+import { nanoid } from 'nanoid';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 import { Form, FormLabel, FormInput, AddButton } from './ContactForm.styled';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from '../../redux/operations';
 import { selectContacts } from 'redux/selectors';
 
- const ContactForm = () => {
-
+const ContactForm = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
-
 
   const handleSubmit = evt => {
     evt.preventDefault();
@@ -22,34 +18,32 @@ import { selectContacts } from 'redux/selectors';
       id: nanoid(),
       name: form.elements.name.value,
       number: form.elements.number.value,
+    };
+
+    evt.target.reset();
+
+    const filterName = contacts.find(
+      contact => contact.name.toLowerCase() === addedContact.name.toLowerCase()
+    );
+
+    if (filterName) {
+      return toast.error(`${addedContact.name} is already in contacts.`, {
+        position: 'bottom-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    }
+
+    dispatch(addContact(addedContact));
   };
 
-  evt.target.reset();
-
-  const filterName = contacts.find(contact =>
-    contact.name.toLowerCase() === addedContact.name.toLowerCase()
-  );
-
-  
-
-  if (filterName) {
-    return toast.error(`${addedContact.name} is already in contacts.`, {
-      position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      });  
-  }
-
-  dispatch(addContact(addedContact));
-  }
-
-    return (
-      <>
+  return (
+    <>
       <Form onSubmit={handleSubmit}>
         <FormLabel>
           Name
@@ -74,18 +68,12 @@ import { selectContacts } from 'redux/selectors';
         </FormLabel>
         <AddButton type="submit">Add contact</AddButton>
       </Form>
-      </>
-    );
-
- }
-
-
-
+    </>
+  );
+};
 
 // ContactForm.propTypes = {
 //   onSubmit: PropTypes.func.isRequired,
 // }
 
- 
 export default ContactForm;
-

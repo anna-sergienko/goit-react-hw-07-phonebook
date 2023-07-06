@@ -3,7 +3,7 @@ import { filterContacts } from 'redux/filterSlice';
 // import PropTypes from 'prop-types';
 import { FilterLabel, FilterInput } from './Filter.styled';
 
-function Filter ()  {
+function Filter() {
   const dispatch = useDispatch();
 
   const onChange = evt => {
@@ -12,10 +12,10 @@ function Filter ()  {
 
   return (
     <FilterLabel>
-    Find contacts by name
-    <FilterInput type="text" name="filter" onChange={onChange} />
-  </FilterLabel>
-  )
+      Find contacts by name
+      <FilterInput type="text" name="filter" onChange={onChange} />
+    </FilterLabel>
+  );
 }
 
 export default Filter;
